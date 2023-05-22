@@ -60,7 +60,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
     List<Appointment> moduelList;
     List<Appointment> moduelList1;
     EditText name, type, priority, notes;
-    TextView ExDate, add_title, dismiss;
+    TextView ExDate, add_title;
     LinearLayout dateLayout;
     Button save, cancel;
 
@@ -99,7 +99,6 @@ public class EditAppointmentActivity extends AppCompatActivity {
         dateLayout = findViewById(R.id.dateLayout);
         save = findViewById(R.id.btn_edit);
         cancel = findViewById(R.id.btn_close);
-        dismiss = findViewById(R.id.btn_dismiss);
         add_title = findViewById(R.id.add_title);
 
         name.setText(title);
@@ -108,22 +107,12 @@ public class EditAppointmentActivity extends AppCompatActivity {
         priority.setText(mPriority);
         notes.setText(mNotes);
 
-        dismiss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moduelList.remove(index);
-                moduelList1.addAll(moduelList);
 
-                sharedPreferences.setAPPOINTMENTS(moduelList1);
-
-                Toast.makeText(EditAppointmentActivity.this, "Appointment is dismissed", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(EditAppointmentActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -131,6 +120,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
         add_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(EditAppointmentActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -295,6 +285,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
                 sharedPreferences.setAPPOINTMENTS(moduelList1);
 
                 Toast.makeText(EditAppointmentActivity.this, "Appointment is Saved", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(EditAppointmentActivity.this, MainActivity.class));
                 finish();
             }
         });

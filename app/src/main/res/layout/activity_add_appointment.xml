@@ -135,7 +135,7 @@
         android:textColor="@color/black"
         android:textColorHint="@color/grey"
         app:layout_constraintEnd_toEndOf="@id/et_task_title"
-        app:layout_constraintHeight_percent="0.25"
+        app:layout_constraintHeight_percent="0.15"
         app:layout_constraintStart_toStartOf="@id/et_task_title"
         app:layout_constraintTop_toBottomOf="@id/radioGroup" />
 
@@ -145,7 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:drawablePadding="8dp"
-        android:hint="choose date and time"
+        android:hint="choose Appointment date and time"
         android:padding="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/black"
@@ -171,7 +171,7 @@
             android:id="@+id/tvTimeDateTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Time Remaining"
+            android:text="Task Time"
             android:padding="4dp"
             android:drawableStart="@drawable/ic_time"
             android:drawablePadding="8dp"
@@ -193,6 +193,60 @@
             android:textColor="@color/teal_700" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_notice_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="8dp"
+        android:hint="choose Notice date and time"
+        android:padding="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        app:drawableStartCompat="@drawable/ic_calendar"
+        app:layout_constraintEnd_toEndOf="@id/et_task_title"
+        app:layout_constraintStart_toStartOf="@id/et_task_title"
+        app:layout_constraintTop_toBottomOf="@id/dateLayout" />
+
+    <LinearLayout
+        android:id="@+id/noticeLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/edit_text_bg"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/et_task_title"
+        app:layout_constraintStart_toStartOf="@id/et_task_title"
+        app:layout_constraintTop_toBottomOf="@id/dateLayout">
+
+        <TextView
+            android:id="@+id/tvNoticeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Notice Time"
+            android:padding="4dp"
+            android:drawableStart="@drawable/ic_time"
+            android:drawablePadding="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/grey" />
+
+        <TextView
+            android:id="@+id/tvNoticeTimeDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/teal_700" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_save"
         android:layout_width="0dp"
@@ -203,7 +257,7 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_task_date"
+        app:layout_constraintTop_toBottomOf="@id/noticeLayout"
         app:layout_constraintWidth_percent="0.4" />
 
     <Button
@@ -216,7 +270,7 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_save"
-        app:layout_constraintTop_toBottomOf="@id/tv_task_date"
+        app:layout_constraintTop_toBottomOf="@id/noticeLayout"
         app:layout_constraintWidth_percent="0.4" />
 
     <ImageView

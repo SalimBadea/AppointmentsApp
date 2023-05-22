@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tasksapp.models.Appointment;
 import com.example.tasksapp.R;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -28,8 +30,13 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
         this.context = context;
     }
 
-    public void clearList(){
+    public void clearList() {
         appointments.clear();
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int position){
+        appointments.remove(position);
         notifyDataSetChanged();
     }
 
@@ -44,6 +51,11 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
 
     @Override
     public void onBindViewHolder(@NonNull MyAppointmentsAdapter.VH holder, int position) {
+
+        Collections.sort(appointments, new sortDateCompare());
+
+        Collections.reverse(appointments);
+
         holder.name.setText(appointments.get(position).getName());
         holder.type.setText(appointments.get(position).getType());
         holder.date.setText(appointments.get(position).getDate());
@@ -51,7 +63,7 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
         holder.notes.setText(appointments.get(position).getNotes());
 
         Appointment appointment = appointments.get(position);
-        
+
         if (appointment.getImportance() == 1) {
             priority = "high";
             holder.priority.setText(priority);
@@ -60,7 +72,7 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
             priority = "medium";
             holder.priority.setText(priority);
             holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.orange));
-        } else if (appointment.getImportance() == 3){
+        } else if (appointment.getImportance() == 3) {
             priority = "low";
             holder.priority.setText(priority);
             holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.yellow));
@@ -80,12 +92,24 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
                 intent.putExtra("notes", appointment.getNotes());
                 intent.putExtra("priority", priority);
                 intent.putExtra("index", position);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
 
         Log.e("Adapter", "onBindViewHolder: " + appointment.getImportance());
         Log.e("Adapter", "count: " + appointments.size());
+    }
+
+    class sortDateCompare implements Comparator<Appointment>
+    {
+        @Override
+        // Method of this class
+        public int compare(Appointment a, Appointment b)
+        {
+            /* Returns sorted data in Descending order */
+            return b.getDate().compareTo(a.getDate());
+        }
     }
 
     @Override

@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tasksapp.R;
+import com.example.tasksapp.SharedPreferencesUtilities;
 import com.example.tasksapp.models.Appointment;
 
 import java.util.ArrayList;
@@ -20,13 +22,20 @@ import java.util.List;
 public class AppointmentDetailsActivity extends AppCompatActivity {
 
     TextView name, type, priority, notes;
-    TextView date, time, title;
+    TextView date, time, title, dismiss;
     Button edit;
+
+    List<Appointment> moduelList;
+    List<Appointment> moduelList1;
+
+    SharedPreferencesUtilities sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_details);
+
+        sharedPreferences = new SharedPreferencesUtilities(this);
 
         Intent intent = getIntent();
         String mTitle = intent.getStringExtra("name");
@@ -45,6 +54,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         date = findViewById(R.id.txtDate);
         time = findViewById(R.id.txtTime);
         edit = findViewById(R.id.btn_edit);
+        dismiss = findViewById(R.id.btn_dismiss);
         title = findViewById(R.id.title);
 
         name.setText(mTitle);
@@ -53,6 +63,12 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         time.setText(mTime);
         priority.setText(mPriority);
         notes.setText(mNotes);
+
+        if (sharedPreferences.getAPPOINTMENTS() != null)
+            moduelList = sharedPreferences.getAPPOINTMENTS();
+        else moduelList = new ArrayList<>();
+
+        moduelList1 = new ArrayList<>();
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +81,6 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                 intent.putExtra("priority", mPriority);
                 intent.putExtra("index", index);
                 startActivity(intent);
-
                 finish();
             }
         });
@@ -73,6 +88,21 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(AppointmentDetailsActivity.this, MainActivity.class));
+                finish();
+            }
+        });
+
+        dismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moduelList.remove(index);
+                moduelList1.addAll(moduelList);
+
+                sharedPreferences.setAPPOINTMENTS(moduelList1);
+
+                Toast.makeText(AppointmentDetailsActivity.this, "Appointment is Deleted", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(AppointmentDetailsActivity.this, MainActivity.class));
                 finish();
             }
         });
