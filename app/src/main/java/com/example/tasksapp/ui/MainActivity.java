@@ -73,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
         moduelList.clear();
         if (preferencesUtilities.getAPPOINTMENTS() != null)
             moduelList = preferencesUtilities.getAPPOINTMENTS();
-        else moduelList = new ArrayList<>();
+        else
+            moduelList = new ArrayList<>();
 
         moduelList1.clear();
         for (int i = 0; i < moduelList.size(); i++) {
@@ -131,11 +132,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        moduelList1.clear();
+
+        moduelList.clear();
         if (preferencesUtilities.getAPPOINTMENTS() != null)
             moduelList = preferencesUtilities.getAPPOINTMENTS();
         else moduelList = new ArrayList<>();
 
+        moduelList1.clear();
         for (int i = 0; i < moduelList.size(); i++) {
             Appointment appointment = new Appointment();
             appointment.setName(moduelList.get(i).getName());
@@ -145,6 +148,16 @@ public class MainActivity extends AppCompatActivity {
             appointment.setNotes(moduelList.get(i).getNotes());
             appointment.setImportance(moduelList.get(i).getImportance());
             moduelList1.add(i, appointment);
+        }
+
+        Collections.sort(moduelList1, new sortTimeCompare());
+
+//        Collections.reverse(moduelList1);
+
+        sortedList.clear();
+        for (Appointment dateStr : moduelList1) {
+            sortedList.add(dateStr);
+            System.out.println("reverse Sorted List >> " + sortedList.size());
         }
 
         myAppointmentsAdapter = new MyAppointmentsAdapter(sortedList, this);

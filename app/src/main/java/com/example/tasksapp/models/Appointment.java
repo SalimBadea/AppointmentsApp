@@ -4,7 +4,9 @@ public class Appointment {
    private String name;
    private String type;
    private String date;
+   private String noticeDate;
    private String time;
+   private String noticeTime;
    private long dateTime;
    private Integer importance;
    private String notes;
@@ -39,6 +41,22 @@ public class Appointment {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getNoticeDate() {
+        return noticeDate;
+    }
+
+    public void setNoticeDate(String noticeDate) {
+        this.noticeDate = noticeDate;
+    }
+
+    public String getNoticeTime() {
+        return noticeTime;
+    }
+
+    public void setNoticeTime(String noticeTime) {
+        this.noticeTime = noticeTime;
     }
 
     public long getDateTime() {
