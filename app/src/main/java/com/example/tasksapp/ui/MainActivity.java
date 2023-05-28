@@ -81,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
             Appointment appointment = new Appointment();
             appointment.setName(moduelList.get(i).getName());
             appointment.setTime(moduelList.get(i).getTime());
+            appointment.setNoticeTime(moduelList.get(i).getNoticeTime());
             appointment.setDate(moduelList.get(i).getDate());
+            appointment.setNoticeDate(moduelList.get(i).getNoticeDate());
             appointment.setType(moduelList.get(i).getType());
             appointment.setNotes(moduelList.get(i).getNotes());
             appointment.setImportance(moduelList.get(i).getImportance());
@@ -143,7 +145,9 @@ public class MainActivity extends AppCompatActivity {
             Appointment appointment = new Appointment();
             appointment.setName(moduelList.get(i).getName());
             appointment.setTime(moduelList.get(i).getTime());
+            appointment.setNoticeTime(moduelList.get(i).getNoticeTime());
             appointment.setDate(moduelList.get(i).getDate());
+            appointment.setNoticeDate(moduelList.get(i).getNoticeDate());
             appointment.setType(moduelList.get(i).getType());
             appointment.setNotes(moduelList.get(i).getNotes());
             appointment.setImportance(moduelList.get(i).getImportance());

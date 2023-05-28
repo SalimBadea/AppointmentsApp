@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class EditAppointmentActivity extends AppCompatActivity {
 
@@ -43,26 +46,35 @@ public class EditAppointmentActivity extends AppCompatActivity {
     private long time;
     private long date;
     private long longdate;
+    private long longNoticeDate;
     private String timeinfo;
+    private String timenoticeinfo;
     private String str;
     private String s;
     private String timepick;
     private String datepick;
+    private String noticetimepick;
+    private String noticedatepick;
     private String timestamppick;
     private StringBuilder dateinfo;
+    private StringBuilder datenoticeinfo;
     private Button mDateButton;
     private Button mTimeButton;
     private Button mDoneButton;
 
     private Boolean mNotified = false;
 
+    private int priority;
+
     Appointment appointment;
     List<Appointment> moduelList;
     List<Appointment> moduelList1;
-    EditText name, type, priority, notes;
-    TextView ExDate, add_title;
-    LinearLayout dateLayout;
+    EditText name, type, notes;
+    TextView ExDate, tvNoticeTimeDate, add_title;
+    LinearLayout dateLayout, noticeLayout;
     Button save, cancel;
+    RadioGroup radioGroup;
+    RadioButton high, medium, low;
 
     SharedPreferencesUtilities sharedPreferences;
 
@@ -79,6 +91,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
         String title = intent.getStringExtra("name");
         String mType = intent.getStringExtra("type");
         String mDateTime = intent.getStringExtra("date");
+        String mNoticeDateTime = intent.getStringExtra("noticeDate");
         String mNotes = intent.getStringExtra("notes");
         String mPriority = intent.getStringExtra("priority");
         int index = intent.getIntExtra("index", 0);
@@ -93,21 +106,35 @@ public class EditAppointmentActivity extends AppCompatActivity {
 
         name = findViewById(R.id.et_task_name);
         type = findViewById(R.id.et_task_mType);
-        priority = findViewById(R.id.et_task_mPriority);
         notes = findViewById(R.id.et_task_content);
         ExDate = findViewById(R.id.tvTimeDate);
+        tvNoticeTimeDate = findViewById(R.id.tvNoticeTimeDate);
         dateLayout = findViewById(R.id.dateLayout);
+        noticeLayout = findViewById(R.id.noticeLayout);
         save = findViewById(R.id.btn_edit);
         cancel = findViewById(R.id.btn_close);
         add_title = findViewById(R.id.add_title);
+        radioGroup = findViewById(R.id.radioGroup);
+        high = findViewById(R.id.high);
+        medium = findViewById(R.id.medium);
+        low = findViewById(R.id.low);
 
         name.setText(title);
         type.setText(mType);
         ExDate.setText(mDateTime);
-        priority.setText(mPriority);
+        tvNoticeTimeDate.setText(mNoticeDateTime);
         notes.setText(mNotes);
 
-
+        if (mPriority.equals("high")){
+            priority = 1;
+            high.setChecked(true);
+        }else if (mPriority.equals("medium")){
+            priority = 2;
+            medium.setChecked(true);
+        }else {
+            priority = 3;
+            low.setChecked(true);
+        }
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +149,25 @@ public class EditAppointmentActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(EditAppointmentActivity.this, MainActivity.class));
                 finish();
+            }
+        });
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.high:
+                        priority = 1;
+                        break;
+
+                    case R.id.medium:
+                        priority = 2;
+                        break;
+
+                    case R.id.low:
+                        priority = 3;
+                        break;
+                }
             }
         });
 
@@ -216,7 +262,112 @@ public class EditAppointmentActivity extends AppCompatActivity {
                                 String txt = arr[0] + " " + arr[1];
                                 st.append(txt);
                                 Log.e("AddTask >> ", st.toString());
-                                ExDate.setText(st.toString());
+                                ExDate.setText(String.format(Locale.US,st.toString()));
+                                dialog.dismiss();
+                            } else {
+                                Toast.makeText(EditAppointmentActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        });
+
+        noticeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialog = new Dialog(EditAppointmentActivity.this);
+                dialog.setContentView(R.layout.date_dialog);
+                dialog.setCancelable(true);
+                dialog.show();
+
+                mDateButton = dialog.findViewById(R.id.btn_date);
+                mTimeButton = dialog.findViewById(R.id.btn_time);
+                mDoneButton = dialog.findViewById(R.id.btn_done);
+
+                mDateButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mYear = c.get(Calendar.YEAR);
+                        mMonth = c.get(Calendar.MONTH);
+                        mDay = c.get(Calendar.DAY_OF_MONTH);
+                        date = c.getTimeInMillis() / 1000L;
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                                EditAppointmentActivity.this, new mNoticeDateSetListener(), mYear, mMonth, mDay);
+                        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                        datePickerDialog.show();
+                    }
+                });
+                mTimeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        hour = c.get(Calendar.HOUR_OF_DAY);
+                        minute = c.get(Calendar.MINUTE);
+                        second = c.get(Calendar.SECOND);
+                        TimePickerDialog mTimePicker = new TimePickerDialog(
+                                EditAppointmentActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                                hour = selectedHour;
+                                minute = selectedMinute;
+                                timenoticeinfo = selectedHour + ":" + selectedMinute + ":" + "00";
+                                mTimeButton.setText(timenoticeinfo);
+
+                                Calendar c = Calendar.getInstance();
+                                c.set(Calendar.HOUR, hour);
+                                c.set(Calendar.MINUTE, minute);
+                                c.set(Calendar.SECOND, second);
+                                time = c.getTimeInMillis() / 1000L;
+                            }
+
+                        }, hour, minute, true);
+
+                        // Yes 24 hour time
+                        mTimePicker.setTitle("Select  Time");
+                        mTimePicker.show();
+
+                        timestamp(mYear, mMonth, mDay, hour, minute);
+
+                    }
+                });
+
+                mDoneButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        c = Calendar.getInstance();
+                        c.set(Calendar.MONTH, mMonth);
+                        c.set(Calendar.YEAR, mYear);
+                        c.set(Calendar.DAY_OF_MONTH, mDay);
+
+                        c.set(Calendar.HOUR_OF_DAY, hour);
+                        c.set(Calendar.MINUTE, minute);
+                        c.set(Calendar.SECOND, second);
+
+                        long result1 = c.getTimeInMillis() / 1000L;
+                        noticetimepick = mTimeButton.getText().toString();
+                        noticedatepick = mDateButton.getText().toString();
+                        timestamppick = Long.toString(result1);
+
+                        s = noticedatepick + " " + noticetimepick;
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        try {
+                            Date date = sdf.parse(s);
+                            longNoticeDate = date.getTime();
+
+                            str = sdf.format(date);
+                            if (str != null) {
+                                String[] arr = str.split(" ");
+
+                                StringBuilder st = new StringBuilder();
+
+                                String txt = arr[0] + " " + arr[1];
+                                st.append(txt);
+                                Log.e("AddTask >> ", st.toString());
+                                tvNoticeTimeDate.setText(String.format(Locale.US,st.toString()));
                                 dialog.dismiss();
                             } else {
                                 Toast.makeText(EditAppointmentActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT).show();
@@ -235,10 +386,10 @@ public class EditAppointmentActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String title = name.getText().toString();
                 String mType = type.getText().toString();
-                int mPriority = 1;
+//                int mPriority = 1;
                 String content = notes.getText().toString();
 
-                String[] arrDate = ExDate.getText().toString().split(" ");
+                String[] arrDate = tvNoticeTimeDate.getText().toString().split(" ");
 
                 long result1 = c.getTimeInMillis() / 1000L;
                 timepick = arrDate[1];
@@ -251,7 +402,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
                     Date date = sdf.parse(s);
-                    longdate = date.getTime();
+                    longNoticeDate = date.getTime();
 
                     str = sdf.format(date);
                     if (str != null) {
@@ -262,7 +413,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
                         String txt = arr[0] + " " + arr[1];
                         st.append(txt);
                         Log.e("AddTask >> ", st.toString());
-                        ExDate.setText(st.toString());
+                        tvNoticeTimeDate.setText(st.toString());
 
                     } else {
                         Toast.makeText(EditAppointmentActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT).show();
@@ -272,12 +423,12 @@ public class EditAppointmentActivity extends AppCompatActivity {
                 }
 
                 if (!mNotified)
-                    new NotificationUtils().setNotification(longdate, EditAppointmentActivity.this);
+                    new NotificationUtils().setNotification(longNoticeDate, EditAppointmentActivity.this);
 
                 Log.e("AddActivity", "title >> " + title + " type >> " + mType + " priority >> " + mPriority + " notes >> " + content
-                        + " time >> " + timeinfo + " date >> " + datepick + " longDate >> " + longdate);
+                        + " time >> " + timeinfo + " date >> " + datepick + " longDate >> " + longNoticeDate);
 
-                appointment = new Appointment(title, mType, datepick, timepick, longdate, mPriority, content);
+                appointment = new Appointment(title, mType, datepick, noticedatepick, timepick, noticetimepick, longNoticeDate, priority, content);
                 moduelList.set(index,appointment);
 
                 moduelList1.addAll(moduelList);
@@ -302,6 +453,32 @@ public class EditAppointmentActivity extends AppCompatActivity {
             c.set(Calendar.DAY_OF_MONTH, mDay);
             dateinfo = new StringBuilder().append(mYear).append("-").append(mMonth + 1).append("-").append(mDay);
             mDateButton.setText(dateinfo.toString());
+        }
+    }
+
+    final class mNoticeDateSetListener implements DatePickerDialog.OnDateSetListener {
+        public void onDateSet(@NotNull DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            mYear = year;
+            mMonth = monthOfYear;
+            mDay = dayOfMonth;
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, mYear);
+            c.set(Calendar.MONTH, mMonth);
+            c.set(Calendar.DAY_OF_MONTH, mDay);
+            String month;
+            String day;
+            if (mMonth <= 9) {
+                month = "0" + (mMonth + 1);
+            } else {
+                month = (mMonth + 1)+ "";
+            }
+            if (mDay <= 9) {
+                day = "0" + mDay;
+            } else {
+                day = mDay + "";
+            }
+            datenoticeinfo = new StringBuilder().append(mYear).append("-").append(month).append("-").append(day);
+            mDateButton.setText(datenoticeinfo.toString());
         }
     }
 

@@ -22,7 +22,7 @@ import java.util.List;
 public class AppointmentDetailsActivity extends AppCompatActivity {
 
     TextView name, type, priority, notes;
-    TextView date, time, title, dismiss;
+    TextView date, time, noticeDate, noticeTime, title, dismiss;
     Button edit;
 
     List<Appointment> moduelList;
@@ -41,18 +41,22 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         String mTitle = intent.getStringExtra("name");
         String mType = intent.getStringExtra("type");
         String mDate = intent.getStringExtra("date");
+        String mNoticeDate = intent.getStringExtra("noticeDate");
         String mTime = intent.getStringExtra("time");
+        String mNoticeTime = intent.getStringExtra("noticeTime");
         String mNotes = intent.getStringExtra("notes");
         String mPriority = intent.getStringExtra("priority");
         int index = intent.getIntExtra("index", 0);
 
-
+Log.e("Details" , "Details >> " + mNoticeTime + " " + mNoticeDate);
         name = findViewById(R.id.txtName);
         type = findViewById(R.id.txtType);
         priority = findViewById(R.id.txtPriority);
         notes = findViewById(R.id.notes);
         date = findViewById(R.id.txtDate);
         time = findViewById(R.id.txtTime);
+        noticeDate = findViewById(R.id.txtNoticeDate);
+        noticeTime = findViewById(R.id.txtNoticeTime);
         edit = findViewById(R.id.btn_edit);
         dismiss = findViewById(R.id.btn_dismiss);
         title = findViewById(R.id.title);
@@ -60,7 +64,9 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         name.setText(mTitle);
         type.setText(mType);
         date.setText(mDate);
+        noticeDate.setText(mNoticeDate);
         time.setText(mTime);
+        noticeTime.setText(mNoticeTime);
         priority.setText(mPriority);
         notes.setText(mNotes);
 
@@ -77,6 +83,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                 intent.putExtra("name", mTitle);
                 intent.putExtra("type", mType);
                 intent.putExtra("date", mDate + " " + mTime);
+                intent.putExtra("noticeDate", mNoticeDate + " " + mNoticeTime);
                 intent.putExtra("notes", mNotes);
                 intent.putExtra("priority", mPriority);
                 intent.putExtra("index", index);

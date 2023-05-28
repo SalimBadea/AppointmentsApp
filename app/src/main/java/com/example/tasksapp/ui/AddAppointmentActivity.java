@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AddAppointmentActivity extends AppCompatActivity {
 
@@ -360,7 +361,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
                                     Log.e("AddTask >> ", st.toString());
                                     tvNoticeTitle.setVisibility(View.GONE);
                                     noticeLayout.setVisibility(View.VISIBLE);
-                                    tvNoticeTimeDate.setText(st.toString());
+                                    tvNoticeTimeDate.setText(String.format(Locale.US, st.toString()));
                                     dialog.dismiss();
                                 } else {
                                     Toast.makeText(AddAppointmentActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT).show();
@@ -404,23 +405,29 @@ public class AddAppointmentActivity extends AppCompatActivity {
 //                String mPriority = priority.getText().toString();
                 String content = notes.getText().toString();
 
-                if (!mNotified)
-                    new NotificationUtils().setNotification(longNoticeDate, AddAppointmentActivity.this);
+                if (longNoticeDate != 0) {
 
-                Log.e("AddActivity", "title >> " + title + " type >> " + mType + " priority >> " + mPriority + " notes >> " + content
-                        + " time >> " + timeinfo + " date >> " + dateinfo + " longDate >> " + longdate);
+                    if (!mNotified)
+                        new NotificationUtils().setNotification(longNoticeDate, AddAppointmentActivity.this);
 
-                appointment = new Appointment(title, mType, dateinfo.toString(), timeinfo, longdate, mPriority, content);
+                    Log.e("AddActivity", "title >> " + title + " type >> " + mType + " priority >> " + mPriority + " notes >> " + content
+                            + " time >> " + timeinfo + " date >> " + dateinfo + " " + "notice time >> " + timenoticeinfo
+                            + " " + "notice date >> " + datenoticeinfo + " longDate >> " + longdate);
 
-                moduelList.add(appointment);
-                moduelList1.addAll(moduelList);
+                    appointment = new Appointment(title, mType, dateinfo.toString(), datenoticeinfo.toString(),
+                            timeinfo, timenoticeinfo, longNoticeDate, mPriority, content);
 
-                sharedPreferences.setAPPOINTMENTS(moduelList1);
+                    moduelList.add(appointment);
+                    moduelList1.addAll(moduelList);
 
-                Toast.makeText(AddAppointmentActivity.this, "Appointment is Saved", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(AddAppointmentActivity.this, MainActivity.class));
-                finish();
+                    sharedPreferences.setAPPOINTMENTS(moduelList1);
 
+                    Toast.makeText(AddAppointmentActivity.this, "Appointment is Saved", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(AddAppointmentActivity.this, MainActivity.class));
+                    finish();
+                }else {
+                    Toast.makeText(AddAppointmentActivity.this, "Please complete required data", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

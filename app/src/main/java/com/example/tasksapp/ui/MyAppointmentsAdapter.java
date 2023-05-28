@@ -35,7 +35,7 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
         notifyDataSetChanged();
     }
 
-    public void removeItem(int position){
+    public void removeItem(int position) {
         appointments.remove(position);
         notifyDataSetChanged();
     }
@@ -88,7 +88,9 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
                 intent.putExtra("name", appointment.getName());
                 intent.putExtra("type", appointment.getType());
                 intent.putExtra("date", appointment.getDate());
+                intent.putExtra("noticeDate", appointment.getNoticeDate());
                 intent.putExtra("time", appointment.getTime());
+                intent.putExtra("noticeTime", appointment.getNoticeTime());
                 intent.putExtra("notes", appointment.getNotes());
                 intent.putExtra("priority", priority);
                 intent.putExtra("index", position);
@@ -98,15 +100,15 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
         });
 
         Log.e("Adapter", "onBindViewHolder: " + appointment.getImportance());
+        Log.e("Adapter", "onBindViewHolder: " + appointment.getNoticeDate());
+        Log.e("Adapter", "onBindViewHolder: " + appointment.getNoticeTime());
         Log.e("Adapter", "count: " + appointments.size());
     }
 
-    class sortDateCompare implements Comparator<Appointment>
-    {
+    class sortDateCompare implements Comparator<Appointment> {
         @Override
         // Method of this class
-        public int compare(Appointment a, Appointment b)
-        {
+        public int compare(Appointment a, Appointment b) {
             /* Returns sorted data in Descending order */
             return b.getDate().compareTo(a.getDate());
         }
@@ -114,25 +116,29 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
 
     @Override
     public int getItemCount() {
-        if (appointments != null)
+        if (appointments.size() > 5) {
+            return 5;
+        } else if (appointments.size() <= 5 && appointments.size() > 0) {
             return appointments.size();
-        else return 0;
-    }
-
-    public static class VH extends RecyclerView.ViewHolder {
-        TextView name, type, date, time, notes, priority;
-        CardView appointmentLayout;
-
-        public VH(@NonNull View itemView) {
-            super(itemView);
-            name = itemView.findViewById(R.id.name);
-            type = itemView.findViewById(R.id.type);
-            date = itemView.findViewById(R.id.date);
-            time = itemView.findViewById(R.id.time);
-            notes = itemView.findViewById(R.id.notes);
-            priority = itemView.findViewById(R.id.priority);
-            appointmentLayout = itemView.findViewById(R.id.cvAppointment);
-
+        } else {
+            return 0;
         }
     }
-}
+
+        public static class VH extends RecyclerView.ViewHolder {
+            TextView name, type, date, time, notes, priority;
+            CardView appointmentLayout;
+
+            public VH(@NonNull View itemView) {
+                super(itemView);
+                name = itemView.findViewById(R.id.name);
+                type = itemView.findViewById(R.id.type);
+                date = itemView.findViewById(R.id.date);
+                time = itemView.findViewById(R.id.time);
+                notes = itemView.findViewById(R.id.notes);
+                priority = itemView.findViewById(R.id.priority);
+                appointmentLayout = itemView.findViewById(R.id.cvAppointment);
+
+            }
+        }
+    }

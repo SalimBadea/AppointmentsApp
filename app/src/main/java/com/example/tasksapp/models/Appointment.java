@@ -86,11 +86,13 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(String name, String type, String date, String time, long dateTime, Integer priority, String notes) {
+    public Appointment(String name, String type, String date, String noticeDate, String time, String noticeTime, long dateTime, Integer priority, String notes) {
         this.name = name;
         this.type = type;
         this.date = date;
+        this.noticeDate = noticeDate;
         this.time = time;
+        this.noticeTime = noticeTime;
         this.dateTime = dateTime;
         this.importance = priority;
         this.notes = notes;
