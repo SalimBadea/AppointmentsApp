@@ -239,8 +239,11 @@ public class AddAppointmentActivity extends AppCompatActivity {
                                 st.append(txt);
                                 Log.e("AddTask >> ", st.toString());
                                 tvTimeDateTitle.setVisibility(View.GONE);
+
+                                Log.e("AddTask Date >> ", datepick + " " + timepick);
+
                                 dateLayout.setVisibility(View.VISIBLE);
-                                ExDate.setText(st.toString());
+                                ExDate.setText(datepick + " " + timepick);
                                 dialog.dismiss();
                             } else {
                                 Toast.makeText(AddAppointmentActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT).show();
@@ -361,7 +364,11 @@ public class AddAppointmentActivity extends AppCompatActivity {
                                     Log.e("AddTask >> ", st.toString());
                                     tvNoticeTitle.setVisibility(View.GONE);
                                     noticeLayout.setVisibility(View.VISIBLE);
-                                    tvNoticeTimeDate.setText(String.format(Locale.US, st.toString()));
+
+                                    Log.e("AddTask Notice Date >> ", String.format(Locale.getDefault(), st.toString()));
+
+//                                    tvNoticeTimeDate.setText(String.format(Locale.getDefault(), st.toString()));
+                                    tvNoticeTimeDate.setText(datepick + " " + timepick);
                                     dialog.dismiss();
                                 } else {
                                     Toast.makeText(AddAppointmentActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT).show();
