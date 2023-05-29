@@ -47,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
         moduelList1 = new ArrayList<>();
         sortedList = new ArrayList<>();
 
+        moduelList.clear();
+        moduelList1.clear();
+        sortedList.clear();
+
         plus = findViewById(R.id.ivAdd);
         delete = findViewById(R.id.delete);
 
@@ -72,10 +76,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        moduelList.clear();
-
         if (preferencesUtilities.getAPPOINTMENTS() != null) {
-
             moduelList = preferencesUtilities.getAPPOINTMENTS();
         } else
             moduelList = new ArrayList<>();

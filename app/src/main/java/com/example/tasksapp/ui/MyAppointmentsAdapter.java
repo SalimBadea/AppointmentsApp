@@ -66,15 +66,19 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
 
         Appointment appointment = appointments.get(position);
 
-        if (appointment.getImportance().equals("high")) {
-            priority = "high";
-            holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.red));
-        } else if (appointment.getImportance().equals("medium")) {
-            priority = "medium";
-            holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.orange));
-        } else if (appointment.getImportance().equals("low")) {
-            priority = "low";
-            holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.yellow));
+        switch (appointment.getImportance()) {
+            case "high":
+                priority = "high";
+                holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.red));
+                break;
+            case "medium":
+                priority = "medium";
+                holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.orange));
+                break;
+            case "low":
+                priority = "low";
+                holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.yellow));
+                break;
         }
 
         Log.e("Adapter", "Priority >> " + appointment.getImportance());

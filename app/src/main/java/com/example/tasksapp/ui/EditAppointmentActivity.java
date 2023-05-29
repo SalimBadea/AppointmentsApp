@@ -126,10 +126,13 @@ public class EditAppointmentActivity extends AppCompatActivity {
         notes.setText(mNotes);
 
         if (mPriority.equals("high")){
+            priority = "high";
             high.setChecked(true);
         }else if (mPriority.equals("medium")){
+            priority = "medium";
             medium.setChecked(true);
         }else {
+            priority = "low";
             low.setChecked(true);
         }
 
