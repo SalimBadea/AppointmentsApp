@@ -1,5 +1,6 @@
 package com.example.tasksapp.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -50,7 +51,7 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
     String priority = "";
 
     @Override
-    public void onBindViewHolder(@NonNull MyAppointmentsAdapter.VH holder, int position) {
+    public void onBindViewHolder(@NonNull MyAppointmentsAdapter.VH holder, @SuppressLint("RecyclerView") int position) {
 
         Collections.sort(appointments, new sortDateCompare());
 
@@ -61,20 +62,18 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
         holder.date.setText(appointments.get(position).getDate());
         holder.time.setText(appointments.get(position).getTime());
         holder.notes.setText(appointments.get(position).getNotes());
+        holder.priority.setText(appointments.get(position).getImportance());
 
         Appointment appointment = appointments.get(position);
 
-        if (appointment.getImportance() == 1) {
+        if (appointment.getImportance().equals("high")) {
             priority = "high";
-            holder.priority.setText(priority);
             holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.red));
-        } else if (appointment.getImportance() == 2) {
+        } else if (appointment.getImportance().equals("medium")) {
             priority = "medium";
-            holder.priority.setText(priority);
             holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.orange));
-        } else if (appointment.getImportance() == 3) {
+        } else if (appointment.getImportance().equals("low")) {
             priority = "low";
-            holder.priority.setText(priority);
             holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.yellow));
         }
 
@@ -92,7 +91,7 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
                 intent.putExtra("time", appointment.getTime());
                 intent.putExtra("noticeTime", appointment.getNoticeTime());
                 intent.putExtra("notes", appointment.getNotes());
-                intent.putExtra("priority", priority);
+                intent.putExtra("priority", appointment.getImportance());
                 intent.putExtra("index", position);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);

@@ -48,7 +48,10 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         String mPriority = intent.getStringExtra("priority");
         int index = intent.getIntExtra("index", 0);
 
-Log.e("Details" , "Details >> " + mNoticeTime + " " + mNoticeDate);
+        Log.e("Details", "Details >> " + mNoticeTime + " " + mNoticeDate);
+        Log.e("Details", "Details mPriority >> " + mPriority);
+        Log.e("Details", "Details index >> " + index);
+
         name = findViewById(R.id.txtName);
         type = findViewById(R.id.txtType);
         priority = findViewById(R.id.txtPriority);

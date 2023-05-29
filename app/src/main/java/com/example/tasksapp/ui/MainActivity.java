@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         plus = findViewById(R.id.ivAdd);
         delete = findViewById(R.id.delete);
 
+        sortedList.clear();
+
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,9 +73,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         moduelList.clear();
-        if (preferencesUtilities.getAPPOINTMENTS() != null)
+
+        if (preferencesUtilities.getAPPOINTMENTS() != null) {
+
             moduelList = preferencesUtilities.getAPPOINTMENTS();
-        else
+        } else
             moduelList = new ArrayList<>();
 
         moduelList1.clear();
@@ -99,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        Collections.reverse(moduelList1);
 
-        sortedList.clear();
         for (Appointment dateStr : moduelList1) {
             sortedList.add(dateStr);
             System.out.println("reverse Sorted List >> " + sortedList.size());

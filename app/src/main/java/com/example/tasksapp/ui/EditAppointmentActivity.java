@@ -64,7 +64,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
 
     private Boolean mNotified = false;
 
-    private int priority;
+    private String priority;
 
     Appointment appointment;
     List<Appointment> moduelList;
@@ -126,13 +126,10 @@ public class EditAppointmentActivity extends AppCompatActivity {
         notes.setText(mNotes);
 
         if (mPriority.equals("high")){
-            priority = 1;
             high.setChecked(true);
         }else if (mPriority.equals("medium")){
-            priority = 2;
             medium.setChecked(true);
         }else {
-            priority = 3;
             low.setChecked(true);
         }
 
@@ -157,15 +154,15 @@ public class EditAppointmentActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.high:
-                        priority = 1;
+                        priority = "high";
                         break;
 
                     case R.id.medium:
-                        priority = 2;
+                        priority = "medium";
                         break;
 
                     case R.id.low:
-                        priority = 3;
+                        priority = "low";
                         break;
                 }
             }
@@ -262,7 +259,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
                                 String txt = arr[0] + " " + arr[1];
                                 st.append(txt);
                                 Log.e("AddTask >> ", st.toString());
-                                ExDate.setText(String.format(Locale.US,st.toString()));
+                                ExDate.setText(datepick + " " + timepick);
                                 dialog.dismiss();
                             } else {
                                 Toast.makeText(EditAppointmentActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT).show();
@@ -367,7 +364,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
                                 String txt = arr[0] + " " + arr[1];
                                 st.append(txt);
                                 Log.e("AddTask >> ", st.toString());
-                                tvNoticeTimeDate.setText(String.format(Locale.US,st.toString()));
+                                tvNoticeTimeDate.setText(noticedatepick + " " + noticetimepick);
                                 dialog.dismiss();
                             } else {
                                 Toast.makeText(EditAppointmentActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT).show();
@@ -392,12 +389,12 @@ public class EditAppointmentActivity extends AppCompatActivity {
                 String[] arrDate = tvNoticeTimeDate.getText().toString().split(" ");
 
                 long result1 = c.getTimeInMillis() / 1000L;
-                timepick = arrDate[1];
-                timeinfo = timepick;
-                datepick = arrDate[0];
+                noticetimepick = arrDate[1];
+                timenoticeinfo = noticetimepick;
+                noticedatepick = arrDate[0];
                 timestamppick = Long.toString(result1);
 
-                s = datepick + " " + timepick;
+                s = noticedatepick + " " + noticetimepick;
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
@@ -411,9 +408,11 @@ public class EditAppointmentActivity extends AppCompatActivity {
                         StringBuilder st = new StringBuilder();
 
                         String txt = arr[0] + " " + arr[1];
+
+                        Log.e("EditActivity", "Text Date >> "+txt);
                         st.append(txt);
                         Log.e("AddTask >> ", st.toString());
-                        tvNoticeTimeDate.setText(st.toString());
+                        tvNoticeTimeDate.setText(noticedatepick + " " + noticetimepick);
 
                     } else {
                         Toast.makeText(EditAppointmentActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT).show();
@@ -428,7 +427,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
                 Log.e("AddActivity", "title >> " + title + " type >> " + mType + " priority >> " + mPriority + " notes >> " + content
                         + " time >> " + timeinfo + " date >> " + datepick + " longDate >> " + longNoticeDate);
 
-                appointment = new Appointment(title, mType, datepick, noticedatepick, timepick, noticetimepick, longNoticeDate, priority, content);
+                appointment = new Appointment(title, mType, datepick, noticedatepick, timepick, noticetimepick, longdate, priority, content);
                 moduelList.set(index,appointment);
 
                 moduelList1.addAll(moduelList);

@@ -8,7 +8,7 @@ public class Appointment {
    private String time;
    private String noticeTime;
    private long dateTime;
-   private Integer importance;
+   private String importance;
    private String notes;
 
     public String getName() {
@@ -67,11 +67,11 @@ public class Appointment {
         this.dateTime = dateTime;
     }
 
-    public Integer getImportance() {
+    public String getImportance() {
         return importance;
     }
 
-    public void setImportance(Integer importance) {
+    public void setImportance(String importance) {
         this.importance = importance;
     }
 
@@ -86,7 +86,7 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(String name, String type, String date, String noticeDate, String time, String noticeTime, long dateTime, Integer priority, String notes) {
+    public Appointment(String name, String type, String date, String noticeDate, String time, String noticeTime, long dateTime, String priority, String notes) {
         this.name = name;
         this.type = type;
         this.date = date;
