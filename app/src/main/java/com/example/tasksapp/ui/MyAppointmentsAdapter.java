@@ -27,12 +27,15 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
     List<Appointment> appointments = new ArrayList<>();
     Context context;
 
+    private OnItemClicked onItemClicked;
+
     public MyAppointmentsAdapter() {
     }
 
-    public MyAppointmentsAdapter(List<Appointment> appointments, Context context) {
+    public MyAppointmentsAdapter(List<Appointment> appointments, Context context, OnItemClicked onItemClicked) {
         this.appointments = appointments;
         this.context = context;
+        this.onItemClicked = onItemClicked;
     }
 
     public void clearList() {
@@ -48,7 +51,7 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
 
     public void removeItem(int position) {
         appointments.remove(position);
-        notifyDataSetChanged();
+        notifyItemRemoved(position);
     }
 
 
@@ -95,18 +98,20 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(context, AppointmentDetailsActivity.class);
-                intent.putExtra("name", appointment.getName());
-                intent.putExtra("type", appointment.getType());
-                intent.putExtra("date", appointment.getDate());
-                intent.putExtra("noticeDate", appointment.getNoticeDate());
-                intent.putExtra("time", appointment.getTime());
-                intent.putExtra("noticeTime", appointment.getNoticeTime());
-                intent.putExtra("notes", appointment.getNotes());
-                intent.putExtra("priority", appointment.getImportance());
-                intent.putExtra("index", position);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                onItemClicked.onClicked(holder.getAdapterPosition());
+
+//                Intent intent = new Intent(context, AppointmentDetailsActivity.class);
+//                intent.putExtra("name", appointment.getName());
+//                intent.putExtra("type", appointment.getType());
+//                intent.putExtra("date", appointment.getDate());
+//                intent.putExtra("noticeDate", appointment.getNoticeDate());
+//                intent.putExtra("time", appointment.getTime());
+//                intent.putExtra("noticeTime", appointment.getNoticeTime());
+//                intent.putExtra("notes", appointment.getNotes());
+//                intent.putExtra("priority", appointment.getImportance());
+//                intent.putExtra("index", position);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(intent);
             }
         });
 
@@ -152,4 +157,8 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
 
             }
         }
+    }
+    
+    interface OnItemClicked{
+        public void onClicked(int position);
     }

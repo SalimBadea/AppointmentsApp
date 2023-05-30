@@ -64,6 +64,9 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         dismiss = findViewById(R.id.btn_dismiss);
         title = findViewById(R.id.title);
 
+
+        dismiss.setVisibility(View.GONE);
+
         name.setText(mTitle);
         type.setText(mType);
         date.setText(mDate);
@@ -103,18 +106,18 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             }
         });
 
-        dismiss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moduelList.remove(index);
-                moduelList1.addAll(moduelList);
-
-                sharedPreferences.setAPPOINTMENTS(moduelList1);
-
-                Toast.makeText(AppointmentDetailsActivity.this, "Appointment is Deleted", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(AppointmentDetailsActivity.this, MainActivity.class));
-                finish();
-            }
-        });
+//        dismiss.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                moduelList.remove(index);
+//                moduelList1.addAll(moduelList);
+//
+//                sharedPreferences.setAPPOINTMENTS(moduelList1);
+//
+//                Toast.makeText(AppointmentDetailsActivity.this, "Appointment is Deleted", Toast.LENGTH_LONG).show();
+//                startActivity(new Intent(AppointmentDetailsActivity.this, MainActivity.class));
+//                finish();
+//            }
+//        });
     }
 }
