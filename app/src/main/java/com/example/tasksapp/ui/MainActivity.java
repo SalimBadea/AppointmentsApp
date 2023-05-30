@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
 
         Collections.sort(moduelList1, new sortDateCompare());
 
-//        Collections.reverse(moduelList1);
+        Collections.reverse(moduelList1);
 
         sortedList.clear();
         for (Appointment dateStr : moduelList1) {
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
 
         Collections.sort(sortedList, new sortDateCompare());
 
-//        Collections.reverse(moduelList1);
+        Collections.reverse(moduelList1);
 
         sortedList.clear();
         for (Appointment dateStr : moduelList1) {

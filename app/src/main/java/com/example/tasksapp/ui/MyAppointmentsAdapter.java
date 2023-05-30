@@ -69,7 +69,13 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
     @Override
     public void onBindViewHolder(@NonNull MyAppointmentsAdapter.VH holder, @SuppressLint("RecyclerView") int position) {
 
+
+
+        Collections.sort(appointments, new sortDateCompare());
+
         Collections.sort(appointments, new sortTimeCompare());
+
+//        Collections.reverse(appointments);
 
         holder.name.setText(appointments.get(position).getName());
         holder.type.setText(appointments.get(position).getType());
