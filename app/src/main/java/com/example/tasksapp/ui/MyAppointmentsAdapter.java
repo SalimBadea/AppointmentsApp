@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tasksapp.models.Appointment;
 import com.example.tasksapp.R;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -23,8 +24,11 @@ import java.util.List;
 
 public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAdapter.VH> {
 
-    List<Appointment> appointments;
+    List<Appointment> appointments = new ArrayList<>();
     Context context;
+
+    public MyAppointmentsAdapter() {
+    }
 
     public MyAppointmentsAdapter(List<Appointment> appointments, Context context) {
         this.appointments = appointments;
@@ -36,10 +40,18 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
         notifyDataSetChanged();
     }
 
+    public void addList(List<Appointment> list) {
+        appointments.clear();
+        appointments.addAll(list);
+        notifyDataSetChanged();
+    }
+
     public void removeItem(int position) {
         appointments.remove(position);
         notifyDataSetChanged();
     }
+
+
 
     @NonNull
     @Override
@@ -52,10 +64,6 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
 
     @Override
     public void onBindViewHolder(@NonNull MyAppointmentsAdapter.VH holder, @SuppressLint("RecyclerView") int position) {
-
-        Collections.sort(appointments, new sortDateCompare());
-
-        Collections.reverse(appointments);
 
         holder.name.setText(appointments.get(position).getName());
         holder.type.setText(appointments.get(position).getType());

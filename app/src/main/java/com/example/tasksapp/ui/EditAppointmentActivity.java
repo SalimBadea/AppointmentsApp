@@ -208,7 +208,20 @@ public class EditAppointmentActivity extends AppCompatActivity {
                             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                                 hour = selectedHour;
                                 minute = selectedMinute;
-                                timeinfo = selectedHour + ":" + selectedMinute + ":" + "00";
+                                String mHour;
+                                String mMinute;
+                                if (selectedHour <= 9) {
+                                    mHour = "0" + selectedHour;
+                                } else {
+                                    mHour = selectedHour + "";
+                                }
+
+                                if (selectedMinute <= 9) {
+                                    mMinute = "0" + selectedMinute;
+                                } else {
+                                    mMinute = selectedMinute + "";
+                                }
+                                timeinfo = mHour + ":" + mMinute + ":" + "00";
                                 mTimeButton.setText(timeinfo);
 
                                 Calendar c = Calendar.getInstance();
@@ -313,7 +326,20 @@ public class EditAppointmentActivity extends AppCompatActivity {
                             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                                 hour = selectedHour;
                                 minute = selectedMinute;
-                                timenoticeinfo = selectedHour + ":" + selectedMinute + ":" + "00";
+                                String mHour;
+                                String mMinute;
+                                if (selectedHour <= 9) {
+                                    mHour = "0" + selectedHour;
+                                } else {
+                                    mHour = selectedHour + "";
+                                }
+
+                                if (selectedMinute <= 9) {
+                                    mMinute = "0" + selectedMinute;
+                                } else {
+                                    mMinute = selectedMinute + "";
+                                }
+                                timeinfo = mHour + ":" + mMinute + ":" + "00";
                                 mTimeButton.setText(timenoticeinfo);
 
                                 Calendar c = Calendar.getInstance();
@@ -388,8 +414,10 @@ public class EditAppointmentActivity extends AppCompatActivity {
                 String mType = type.getText().toString();
 //                int mPriority = 1;
                 String content = notes.getText().toString();
+                String date = tvNoticeTimeDate.getText().toString();
+                String noticeDate = ExDate.getText().toString();
 
-                String[] arrDate = tvNoticeTimeDate.getText().toString().split(" ");
+                String[] arrDate = date.split(" ");
 
                 long result1 = c.getTimeInMillis() / 1000L;
                 noticetimepick = arrDate[1];
@@ -401,10 +429,10 @@ public class EditAppointmentActivity extends AppCompatActivity {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
-                    Date date = sdf.parse(s);
-                    longNoticeDate = date.getTime();
+                    Date date1 = sdf.parse(s);
+                    longNoticeDate = date1.getTime();
 
-                    str = sdf.format(date);
+                    str = sdf.format(date1);
                     if (str != null) {
                         String[] arr = str.split(" ");
 
@@ -416,6 +444,41 @@ public class EditAppointmentActivity extends AppCompatActivity {
                         st.append(txt);
                         Log.e("AddTask >> ", st.toString());
                         tvNoticeTimeDate.setText(noticedatepick + " " + noticetimepick);
+
+                    } else {
+                        Toast.makeText(EditAppointmentActivity.this, "Please Select Notice Date and Time", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                String[] arrDate2 = noticeDate.split(" ");
+
+                long result2 = c.getTimeInMillis() / 1000L;
+                timepick = arrDate2[1];
+                timeinfo = timepick;
+                datepick = arrDate2[0];
+                timestamppick = Long.toString(result2);
+
+                s = datepick + " " + timepick;
+
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date date2 = sdf1.parse(s);
+                    longNoticeDate = date2.getTime();
+
+                    str = sdf.format(date2);
+                    if (str != null) {
+                        String[] arr = str.split(" ");
+
+                        StringBuilder st = new StringBuilder();
+
+                        String txt = arr[0] + " " + arr[1];
+
+                        Log.e("EditActivity", "Text Date >> "+txt);
+                        st.append(txt);
+                        Log.e("AddTask >> ", st.toString());
+                        ExDate.setText(datepick + " " + timepick);
 
                     } else {
                         Toast.makeText(EditAppointmentActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT).show();
@@ -453,7 +516,19 @@ public class EditAppointmentActivity extends AppCompatActivity {
             c.set(Calendar.YEAR, mYear);
             c.set(Calendar.MONTH, mMonth);
             c.set(Calendar.DAY_OF_MONTH, mDay);
-            dateinfo = new StringBuilder().append(mYear).append("-").append(mMonth + 1).append("-").append(mDay);
+            String month;
+            String day;
+            if (mMonth <= 9) {
+                month = "0" + (mMonth + 1);
+            } else {
+                month = (mMonth + 1) + "";
+            }
+            if (mDay <= 9) {
+                day = "0" + mDay;
+            } else {
+                day = mDay + "";
+            }
+            dateinfo = new StringBuilder().append(mYear).append("-").append(month).append("-").append(day);
             mDateButton.setText(dateinfo.toString());
         }
     }
@@ -486,12 +561,12 @@ public class EditAppointmentActivity extends AppCompatActivity {
 
     private final int timestamp(int mYear, int mMonth, int mDay, int hour, int minute) {
         Calendar c = Calendar.getInstance();
-        c.set(1, mYear);
-        c.set(2, mMonth);
-        c.set(5, mDay);
-        c.set(10, hour);
-        c.set(12, minute);
-        c.set(13, 0);
+        c.set(Calendar.YEAR, mYear);
+        c.set(Calendar.MONTH, mMonth);
+        c.set(Calendar.DAY_OF_MONTH, mDay);
+        c.set(Calendar.HOUR, hour);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
         c.set(14, 0);
         return (int) (c.getTimeInMillis() / 1000L);
     }

@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
         plus = findViewById(R.id.ivAdd);
         delete = findViewById(R.id.delete);
 
-        sortedList.clear();
-
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,20 +94,20 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.e("TAG", "onCreate: List >> " + moduelList1.size());
 
-        System.out.println("---> Date & Time List After Sort (MM/dd/yyyy '@'hh:mm a)");
+        Collections.sort(moduelList1, new sortDateCompare());
 
-//        Collections.sort(moduelList1, new sortDateCompare());
-
-        Collections.sort(moduelList1, new sortTimeCompare());
-
-//        Collections.reverse(moduelList1);
-
+        sortedList.clear();
         for (Appointment dateStr : moduelList1) {
             sortedList.add(dateStr);
             System.out.println("reverse Sorted List >> " + sortedList.size());
         }
 
-        myAppointmentsAdapter = new MyAppointmentsAdapter(sortedList, this);
+        Collections.sort(sortedList, new sortTimeCompare());
+
+        Collections.reverse(sortedList);
+
+        myAppointmentsAdapter = new MyAppointmentsAdapter();
+        myAppointmentsAdapter.addList(sortedList);
 
         rvAppointments = findViewById(R.id.rvAppointments);
         rvAppointments.setHasFixedSize(true);
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         // Method of this class
         public int compare(Appointment a, Appointment b) {
             /* Returns sorted data in Descending order */
-            return b.getDate().compareTo(a.getDate());
+            return a.getDate().compareTo(b.getDate());
         }
     }
 
@@ -131,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         // Method of this class
         public int compare(Appointment a, Appointment b) {
             /* Returns sorted data in Descending order */
-            return b.getTime().compareTo(a.getTime());
+            return a.getTime().compareTo(b.getTime());
         }
     }
 
