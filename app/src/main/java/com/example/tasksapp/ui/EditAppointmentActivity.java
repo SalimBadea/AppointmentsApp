@@ -340,7 +340,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
                                     mMinute = selectedMinute + "";
                                 }
                                 timeinfo = mHour + ":" + mMinute + ":" + "00";
-                                mTimeButton.setText(timenoticeinfo);
+                                mTimeButton.setText(timeinfo);
 
                                 Calendar c = Calendar.getInstance();
                                 c.set(Calendar.HOUR, hour);

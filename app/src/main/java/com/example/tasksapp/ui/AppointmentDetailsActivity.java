@@ -64,9 +64,6 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         dismiss = findViewById(R.id.btn_dismiss);
         title = findViewById(R.id.title);
 
-
-        dismiss.setVisibility(View.GONE);
-
         name.setText(mTitle);
         type.setText(mType);
         date.setText(mDate);

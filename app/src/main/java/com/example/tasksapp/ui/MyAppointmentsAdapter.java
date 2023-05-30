@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -68,9 +69,11 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
     @Override
     public void onBindViewHolder(@NonNull MyAppointmentsAdapter.VH holder, @SuppressLint("RecyclerView") int position) {
 
+        Collections.sort(appointments, new sortTimeCompare());
+
         holder.name.setText(appointments.get(position).getName());
         holder.type.setText(appointments.get(position).getType());
-        holder.date.setText(appointments.get(position).getDate());
+        holder.date.setText(appointments.get(position).getDate() + " " + appointments.get(position).getTime());
         holder.time.setText(appointments.get(position).getTime());
         holder.notes.setText(appointments.get(position).getNotes());
         holder.priority.setText(appointments.get(position).getImportance());
@@ -80,15 +83,15 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
         switch (appointment.getImportance()) {
             case "high":
                 priority = "high";
-                holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.red));
+                holder.ivPriority.setImageResource(R.drawable.curved_fifty_red);
                 break;
             case "medium":
                 priority = "medium";
-                holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.orange));
+                holder.ivPriority.setImageResource(R.drawable.curved_fifty_orange);
                 break;
             case "low":
                 priority = "low";
-                holder.appointmentLayout.setCardBackgroundColor(context.getColor(R.color.yellow));
+                holder.ivPriority.setImageResource(R.drawable.curved_fifty_yellow);
                 break;
         }
 
@@ -130,6 +133,15 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
         }
     }
 
+    class sortTimeCompare implements Comparator<Appointment> {
+        @Override
+        // Method of this class
+        public int compare(Appointment a, Appointment b) {
+            /* Returns sorted data in Descending order */
+            return a.getTime().compareTo(b.getTime());
+        }
+    }
+
     @Override
     public int getItemCount() {
         if (appointments.size() > 5) {
@@ -144,6 +156,7 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
         public static class VH extends RecyclerView.ViewHolder {
             TextView name, type, date, time, notes, priority;
             CardView appointmentLayout;
+            ImageView ivPriority;
 
             public VH(@NonNull View itemView) {
                 super(itemView);
@@ -152,6 +165,7 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
                 date = itemView.findViewById(R.id.date);
                 time = itemView.findViewById(R.id.time);
                 notes = itemView.findViewById(R.id.notes);
+                ivPriority = itemView.findViewById(R.id.tvPriority);
                 priority = itemView.findViewById(R.id.priority);
                 appointmentLayout = itemView.findViewById(R.id.cvAppointment);
 

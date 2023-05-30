@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
         }
         Log.e("TAG", "onCreate: List >> " + moduelList1.size());
 
-        Collections.sort(moduelList1, new sortTimeCompare());
+        Collections.sort(moduelList1, new sortDateCompare());
 
 //        Collections.reverse(moduelList1);
 
@@ -113,10 +113,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
             sortedList.add(dateStr);
             System.out.println("reverse Sorted List >> " + sortedList.size());
         }
-
-        Collections.sort(sortedList, new sortDateCompare());
-
-        Collections.reverse(sortedList);
 
         myAppointmentsAdapter = new MyAppointmentsAdapter();
         myAppointmentsAdapter.addList(sortedList);
@@ -212,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
         // Method of this class
         public int compare(Appointment a, Appointment b) {
             /* Returns sorted data in Descending order */
+            Log.e("MainActivity", "Date >> " + a.getDate() + " >> " + b.getDate());
             return b.getDate().compareTo(a.getDate());
         }
     }
@@ -221,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
         // Method of this class
         public int compare(Appointment a, Appointment b) {
             /* Returns sorted data in Descending order */
+            Collections.sort(sortedList, new sortDateCompare());
             return a.getTime().compareTo(b.getTime());
         }
     }
@@ -248,7 +246,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
             moduelList1.add(i, appointment);
         }
 
-        Collections.sort(moduelList1, new sortTimeCompare());
+//        Collections.sort(moduelList1, new sortTimeCompare());
+
+        Collections.sort(sortedList, new sortDateCompare());
 
 //        Collections.reverse(moduelList1);
 
@@ -258,15 +258,11 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
             System.out.println("reverse Sorted List >> " + sortedList.size());
         }
 
-        Collections.sort(sortedList, new sortDateCompare());
-
-//        Collections.reverse(sortedList);
-
         myAppointmentsAdapter = new MyAppointmentsAdapter(sortedList, this, this);
 
         rvAppointments = findViewById(R.id.rvAppointments);
         rvAppointments.setHasFixedSize(true);
-        rvAppointments.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        rvAppointments.setLayoutManager(new WrapContentLinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         rvAppointments.setAdapter(myAppointmentsAdapter);
 
     }
