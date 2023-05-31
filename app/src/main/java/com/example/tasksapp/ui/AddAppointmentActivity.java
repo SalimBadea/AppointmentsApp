@@ -753,10 +753,10 @@ public class AddAppointmentActivity extends AppCompatActivity {
         c.set(Calendar.YEAR, mYear);
         c.set(Calendar.MONTH, mMonth);
         c.set(Calendar.DAY_OF_MONTH, mDay);
-        c.set(Calendar.HOUR, hour);
+        c.set(Calendar.HOUR_OF_DAY, hour);
         c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
-        c.set(14, 0);
+        c.set(Calendar.MILLISECOND,0);
         return (int) (c.getTimeInMillis() / 1000L);
     }
 }

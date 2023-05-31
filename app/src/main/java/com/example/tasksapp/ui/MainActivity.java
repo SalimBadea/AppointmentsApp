@@ -20,8 +20,6 @@ import com.example.tasksapp.R;
 import com.example.tasksapp.SharedPreferencesUtilities;
 import com.google.gson.Gson;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -89,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
         } else
             moduelList = new ArrayList<>();
 
+        Collections.reverse(moduelList);
+
         moduelList1.clear();
         for (int i = 0; i < moduelList.size(); i++) {
             Appointment appointment = new Appointment();
@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
             appointment.setNoticeTime(moduelList.get(i).getNoticeTime());
             appointment.setDate(moduelList.get(i).getDate());
             appointment.setNoticeDate(moduelList.get(i).getNoticeDate());
+            appointment.setDateTime(moduelList.get(i).getDateTime());
             appointment.setType(moduelList.get(i).getType());
             appointment.setNotes(moduelList.get(i).getNotes());
             appointment.setImportance(moduelList.get(i).getImportance());
@@ -104,9 +105,11 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
         }
         Log.e("TAG", "onCreate: List >> " + moduelList1.size());
 
-        Collections.sort(moduelList1, new sortDateCompare());
+//        Collections.sort(moduelList1, new sortTimeCompare());
 
-        Collections.reverse(moduelList1);
+//        Collections.sort(moduelList1, new SortDateAndTimeComparator());
+//
+//        Collections.reverse(moduelList1);
 
         sortedList.clear();
         for (Appointment dateStr : moduelList1) {
@@ -114,8 +117,13 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
             System.out.println("reverse Sorted List >> " + sortedList.size());
         }
 
-        myAppointmentsAdapter = new MyAppointmentsAdapter();
-        myAppointmentsAdapter.addList(sortedList);
+//        Collections.sort(sortedList, new sortTimeCompare());
+
+//        Collections.sort(sortedList, new sortDateCompare());
+//
+//        Collections.reverse(sortedList);
+
+        myAppointmentsAdapter = new MyAppointmentsAdapter(sortedList, this, this);
 
         rvAppointments = findViewById(R.id.rvAppointments);
         rvAppointments.setHasFixedSize(true);
@@ -186,14 +194,14 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
 
         mDetailsButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AppointmentDetailsActivity.class);
-            intent.putExtra("name", moduelList.get(position).getName());
-            intent.putExtra("type", moduelList.get(position).getType());
-            intent.putExtra("date", moduelList.get(position).getDate());
-            intent.putExtra("noticeDate", moduelList.get(position).getNoticeDate());
-            intent.putExtra("time", moduelList.get(position).getTime());
-            intent.putExtra("noticeTime", moduelList.get(position).getNoticeTime());
-            intent.putExtra("notes", moduelList.get(position).getNotes());
-            intent.putExtra("priority", moduelList.get(position).getImportance());
+            intent.putExtra("name", sortedList.get(position).getName());
+            intent.putExtra("type", sortedList.get(position).getType());
+            intent.putExtra("date", sortedList.get(position).getDate());
+            intent.putExtra("noticeDate", sortedList.get(position).getNoticeDate());
+            intent.putExtra("time", sortedList.get(position).getTime());
+            intent.putExtra("noticeTime", sortedList.get(position).getNoticeTime());
+            intent.putExtra("notes", sortedList.get(position).getNotes());
+            intent.putExtra("priority", sortedList.get(position).getImportance());
             intent.putExtra("index", position);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -209,7 +217,21 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
         public int compare(Appointment a, Appointment b) {
             /* Returns sorted data in Descending order */
             Log.e("MainActivity", "Date >> " + a.getDate() + " >> " + b.getDate());
-            return b.getDate().compareTo(a.getDate());
+            return a.getDate().compareTo(b.getDate());
+        }
+    }
+
+    public static class SortDateAndTimeComparator implements Comparator<Appointment> {
+        @Override
+        public int compare(Appointment obj1, Appointment obj2) {
+            int dateComparison = obj1.getDate().compareTo(obj2.getDate());
+            if (dateComparison != 0) {
+                Log.e("MainActivity", "dateComparison >> " + dateComparison);
+                return dateComparison;
+            }
+
+            Log.e("MainActivity", "dateComparison >> " + dateComparison);
+            return obj1.getTime().compareTo(obj2.getTime());
         }
     }
 
@@ -218,7 +240,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
         // Method of this class
         public int compare(Appointment a, Appointment b) {
             /* Returns sorted data in Descending order */
-            Collections.sort(sortedList, new sortDateCompare());
+//            Collections.sort(sortedList, new sortDateCompare());
+            Log.e("MainActivity", "Time >> " + a.getTime() + " >> " + b.getTime());
             return a.getTime().compareTo(b.getTime());
         }
     }
@@ -232,6 +255,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
             moduelList = preferencesUtilities.getAPPOINTMENTS();
         else moduelList = new ArrayList<>();
 
+        Collections.reverse(moduelList);
+
         moduelList1.clear();
         for (int i = 0; i < moduelList.size(); i++) {
             Appointment appointment = new Appointment();
@@ -240,6 +265,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
             appointment.setNoticeTime(moduelList.get(i).getNoticeTime());
             appointment.setDate(moduelList.get(i).getDate());
             appointment.setNoticeDate(moduelList.get(i).getNoticeDate());
+            appointment.setDateTime(moduelList.get(i).getDateTime());
             appointment.setType(moduelList.get(i).getType());
             appointment.setNotes(moduelList.get(i).getNotes());
             appointment.setImportance(moduelList.get(i).getImportance());
@@ -248,15 +274,21 @@ public class MainActivity extends AppCompatActivity implements OnItemClicked {
 
 //        Collections.sort(moduelList1, new sortTimeCompare());
 
-        Collections.sort(sortedList, new sortDateCompare());
-
-        Collections.reverse(moduelList1);
+//        Collections.sort(moduelList1, new SortDateAndTimeComparator());
+//
+//        Collections.reverse(moduelList1);
 
         sortedList.clear();
         for (Appointment dateStr : moduelList1) {
             sortedList.add(dateStr);
             System.out.println("reverse Sorted List >> " + sortedList.size());
         }
+
+//        Collections.sort(sortedList, new sortTimeCompare());
+
+//        Collections.sort(sortedList, new sortDateCompare());
+//
+//        Collections.reverse(sortedList);
 
         myAppointmentsAdapter = new MyAppointmentsAdapter(sortedList, this, this);
 

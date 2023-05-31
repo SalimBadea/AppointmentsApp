@@ -69,13 +69,7 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
     @Override
     public void onBindViewHolder(@NonNull MyAppointmentsAdapter.VH holder, @SuppressLint("RecyclerView") int position) {
 
-
-
-        Collections.sort(appointments, new sortDateCompare());
-
-        Collections.sort(appointments, new sortTimeCompare());
-
-//        Collections.reverse(appointments);
+        Collections.sort(appointments, new SortDateAndTimeComparator());
 
         holder.name.setText(appointments.get(position).getName());
         holder.type.setText(appointments.get(position).getType());
@@ -106,45 +100,24 @@ public class MyAppointmentsAdapter extends RecyclerView.Adapter<MyAppointmentsAd
         holder.appointmentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Log.e("Adapter", "position >> " + holder.getAdapterPosition());
                 onItemClicked.onClicked(holder.getAdapterPosition());
-
-//                Intent intent = new Intent(context, AppointmentDetailsActivity.class);
-//                intent.putExtra("name", appointment.getName());
-//                intent.putExtra("type", appointment.getType());
-//                intent.putExtra("date", appointment.getDate());
-//                intent.putExtra("noticeDate", appointment.getNoticeDate());
-//                intent.putExtra("time", appointment.getTime());
-//                intent.putExtra("noticeTime", appointment.getNoticeTime());
-//                intent.putExtra("notes", appointment.getNotes());
-//                intent.putExtra("priority", appointment.getImportance());
-//                intent.putExtra("index", position);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
             }
         });
-
-        Log.e("Adapter", "onBindViewHolder: " + appointment.getImportance());
-        Log.e("Adapter", "onBindViewHolder: " + appointment.getNoticeDate());
-        Log.e("Adapter", "onBindViewHolder: " + appointment.getNoticeTime());
-        Log.e("Adapter", "count: " + appointments.size());
     }
 
-    class sortDateCompare implements Comparator<Appointment> {
-        @Override
-        // Method of this class
-        public int compare(Appointment a, Appointment b) {
-            /* Returns sorted data in Descending order */
-            return b.getDate().compareTo(a.getDate());
-        }
-    }
 
-    class sortTimeCompare implements Comparator<Appointment> {
+    public static class SortDateAndTimeComparator implements Comparator<Appointment> {
         @Override
-        // Method of this class
-        public int compare(Appointment a, Appointment b) {
-            /* Returns sorted data in Descending order */
-            return a.getTime().compareTo(b.getTime());
+        public int compare(Appointment obj1, Appointment obj2) {
+            int dateComparison = obj1.getDate().compareTo(obj2.getDate());
+            if (dateComparison != 0) {
+                Log.e("MainActivity", "dateComparison >> " + dateComparison);
+                return dateComparison;
+            }
+
+            Log.e("MainActivity", "dateComparison >> " + dateComparison);
+            return obj1.getTime().compareTo(obj2.getTime());
         }
     }
 
